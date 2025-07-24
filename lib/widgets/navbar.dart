@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolio/cubit/section_cubit.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -40,20 +42,21 @@ class NavBar extends StatelessWidget {
           // Logo placeholder (can be empty since main logo is in content)
           
           // Navigation items
-          if (!isMobile) _buildDesktopNav() else _buildMobileNav(),
+          if (!isMobile) _buildDesktopNav(context) else _buildMobileNav(),
         ],
       ),
     );
   }
 
-  Widget _buildDesktopNav() {
+  Widget _buildDesktopNav(BuildContext context) {
     return Row(
-      children: [
-        _buildNavItem('About me'),
+      children: [_buildNavItem('Home',Section.home,context),
         const SizedBox(width: 32),
-        _buildNavItem('Skills'),
+        _buildNavItem('About me',Section.about,context),
         const SizedBox(width: 32),
-        _buildNavItem('Portfolio'),
+        _buildNavItem('Skills',Section.skills,context),
+        const SizedBox(width: 32),
+        _buildNavItem('Portfolio',Section.portfolio,context),
         const SizedBox(width: 32),
         _buildContactButton(),
       ],
@@ -69,6 +72,7 @@ class NavBar extends StatelessWidget {
       ),
       color: Colors.black,
       itemBuilder: (context) => [
+        _buildPopupMenuItem('Home'),
         _buildPopupMenuItem('About me'),
         _buildPopupMenuItem('Skills'),
         _buildPopupMenuItem('Portfolio'),
@@ -108,19 +112,22 @@ class NavBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(String text) {
-    return TextButton(
-      onPressed: () {},
-      child: Text(
-        text,
-        style: GoogleFonts.inter(
-          color: Colors.white,
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-        ),
+ Widget _buildNavItem(String text, Section section,BuildContext context) {
+  return TextButton(
+    onPressed: () {
+      context.read<SectionCubit>().changeSection(section);
+    },
+    child: Text(
+      text,
+      style: GoogleFonts.inter(
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Widget _buildContactButton() {
     return ElevatedButton(

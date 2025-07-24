@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolio/cubit/section_cubit.dart';
 import 'package:portfolio/pages/home.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const Portfolio());
 }
 
@@ -17,7 +20,10 @@ class Portfolio extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: GoogleFonts.interTextTheme(),
       ),
-      home: const HomePage(),
+      home: BlocProvider(
+        create: (context) => SectionCubit(),
+        child: const HomePage(),
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
