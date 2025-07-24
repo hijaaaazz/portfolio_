@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+import 'package:portfolio/widgets/navbar.dart';
+
+void main() {
+  runApp(const Portfolio());
+}
+
+class Portfolio extends StatelessWidget {
+  const Portfolio({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Hijaz Chennariyil - Flutter Developer',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Inter',
+      ),
+      home: const HomePage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                 width: size.width * 0.45,
+                 height: size.height,
+                
+               ),
+               SizedBox(
+                 width: size.width * 0.55,
+                 height: size.height,
+                 child: Image.asset(
+                   'assets/images/profile.jpg',
+                   fit: BoxFit.cover,
+                 ),
+               ),
+            ],
+          ),
+          // Grey slanted background on left
+          Align(
+            alignment: Alignment.centerLeft,
+            child: ClipPath(
+              clipper: LeftSlantClipper(),
+              child: Container(
+                width: size.width,
+                height: size.height,
+                color: Colors.grey.shade300,
+              ),
+            ),
+          ),
+
+          // Full image shown completely on the right side
+         
+
+          // Top content (like NavBar)
+          const Column(
+            children: [
+              NavBar(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LeftSlantClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    return Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width * 0.55, 0)
+      ..lineTo(size.width * 0.45, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
